@@ -1,6 +1,16 @@
 import matplotlib.pyplot as plt
 import pandas as pd
 
+def train_vis_by_epoch(train_losses,valid_accuracies,):
+    df = pd.DataFrame({'train_loss': train_losses, 'valid_accuracy': valid_accuracies})
+    file_name = f"epoch_{args.evaluation_model}_{args.num_pos_original}_{args.root_pos_generated}_{args.num_pos_generated}.csv"
+    df.to_csv(file_name, index=False)
+
+def ap_result_visual():
+    
+
+    
+
 
 max_valid_acc={}
 plt.figure(figsize=(19, 8))
