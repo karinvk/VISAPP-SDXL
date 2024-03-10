@@ -2,6 +2,8 @@ import pandas as pd
 import os
 
 def ap_result(valid_accuracies,avg_ap_score,avg_precision_score,avg_recall_score,csv_result_root_name):
+    max_valid_acc=max(valid_accuracies)
+    
     data = {
     'Experiment_setting': f"{args.evaluation_model}_{args.num_pos_original}_{args.root_pos_generated}_{args.num_pos_generated}",
     'Max_Valid_Accuracies': max_valid_acc,
