@@ -2,9 +2,9 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 def train_vis_by_epoch(train_losses,valid_accuracies,experiment_name):
-    df = pd.DataFrame({'train_loss': train_losses, 'valid_accuracy': valid_accuracies})
+    df_epoch = pd.DataFrame({'train_loss': train_losses, 'valid_accuracy': valid_accuracies})
     file_name = f"epoch_{experiment_name}.csv"
-    df.to_csv(file_name, index=False)
+    df_epoch.to_csv(file_name, index=False)
     
     plt.plot(train_losses, label=f'Train Loss {test_name}')
     plt.plot(valid_accuracies, label=f'Val Accuracy {test_name}') 
@@ -17,13 +17,14 @@ def train_vis_by_epoch(train_losses,valid_accuracies,experiment_name):
     plt.close()
 
 def ap_result_visual(csv_result_root_name):
-    
-
-    plt.figure(figsize=(10, 6))
-    plt.plot(max_valid_acc.keys(), max_valid_acc.values(), marker='o')
-    plt.xlabel('Percentage')
-    plt.ylabel('Max Validation Accuracy')
-    plt.title('Max Validation Accuracy for Each Percentage')
-    plt.grid(True)
-    plt.savefig('plot by percentage.png')
-    plt.close()
+    if os.path.exists(csv_result_root_name):
+        df_ap = pd.read_csv(csv_path)
+        
+        plt.figure(figsize=(10, 6))
+        plt.plot(max_valid_acc.keys(), max_valid_acc.values(), marker='o')
+        plt.xlabel('Percentage')
+        plt.ylabel('Max Validation Accuracy')
+        plt.title('Max Validation Accuracy for Each Percentage')
+        plt.grid(True)
+        plt.savefig('plot by percentage.png')
+        plt.close()
