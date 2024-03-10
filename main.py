@@ -34,14 +34,15 @@ def main(args):
     # Train and save model
     train_losses, valid_accuracies, avg_ap_score, avg_precision_score, avg_recall_score=train(train_loader, test_loader, model, optimizer, criterion, args.epochs, device, target_accuracy=None, model_save_path='./saved')
     df = pd.DataFrame({'train_loss': train_losses, 'valid_accuracy': valid_accuracies})
-    file_name = f"results_{args.pos_percentage}.csv"
+    file_name = f"epoch_{args.num_pos_original}_{args.root_pos_generated}_{args.num_pos_generated}.csv"
     df.to_csv(file_name, index=False)
     
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Test the KolektorSDD2 dataset')
     parser.add_argument('--dataset_path', type=str, default='.', help='Path to the KolektorSDD2 dataset')
-    parser.add_argument('--epochs',type=int,default=10,help='epochs, default 10')
+    parser.add_argument('--epochs',type=int,default=50,help='default 50')
+    parser.add_argument('--momentum',type=float,default=0.9,help='default 0.9')
     parser.add_argument('--lr',type=float, default=0.001,help='learning rate, default 0.001')
     parser.add_argument('--num_pos_original', type=int, default=246, help='keep certain number of defect images coming from the original dataset when training, default is keeping all 246 positive images')
     parser.add_argument('--num_pos_generated', type=int, default=0, help='add certain number of synthesized defect images, default is 0')
