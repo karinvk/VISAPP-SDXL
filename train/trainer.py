@@ -3,7 +3,7 @@ from tqdm import tqdm
 import os
 from torchmetrics import AveragePrecision, Precision, Recall
 
-def train(trainloader, testloader, model, optimizer, criterion, epochs, device, target_accuracy=None, model_save_path=''):
+def train(trainloader, testloader, model, optimizer, criterion, epochs, device, target_accuracy=None, model_save_name=''):
     best_acc = 0.0
     train_accuracies = []  # record accuracy for training
     train_losses = []  # record loss for training
@@ -89,7 +89,9 @@ def train(trainloader, testloader, model, optimizer, criterion, epochs, device, 
 
         if valid_accuracy > best_acc:
             best_acc = valid_accuracy
-            model_save_path = os.path.join('./saved/' + model_save_path)
+            model_save_path = os.path.join('./saved/model/' + model_save_name)
+            if not os.path.exists('./saved/model/'):
+                os.makedirs('./saved/model/')
             torch.save(model.state_dict(), model_save_path)
 
     print('Finished Training')
