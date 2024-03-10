@@ -51,7 +51,7 @@ class KolektorSDD2(Dataset):
     def __init__(self,
                  dataroot='/path/to/dataset/'
                           'KolektorSDD2',
-                 split='train', scale='half', positive_percentage=1,
+                 split='train', scale='half', num_pos_original = 246, num_pos_generated = 0, root_pos_generated = None,
                  debug=False):
         super(KolektorSDD2, self).__init__()
 
@@ -65,8 +65,9 @@ class KolektorSDD2(Dataset):
         self.scale = scale
         self.fxy = self.scales[scale]
         self.output_size = self.output_sizes[scale]
-        self.positive_percentage = positive_percentage
-
+        self.num_pos_original = num_pos_original
+        self.num_pos_generated = num_pos_generated
+        self.root_pos_generated = root_pos_generated
 
         self.class_to_idx = inverse_list(self.labels)
         self.classes = self.labels
@@ -79,24 +80,28 @@ class KolektorSDD2(Dataset):
         else:
             self.load_imgs()
             # torch.save((self.samples, self.masks, self.product_ids), image_cache_path)
-        if positive_percentage < 1 and self.split == 'train':
-
+                     
+        if self.split == 'train':
             m = self.masks.sum(-1).sum(-1) == 0 #if mask is empty then it means it is negative, m is 1-d tensor (N - # of images,) 
             positive_cnt = self.samples.size(0) - self.samples[m].size(0)
-            positive_cnt_keep = int(positive_cnt * positive_percentage)
-
-            #randomly pick certain percentage of positive y=1 examples
-            positive_indices = [i for i, m in enumerate(self.masks) if m.sum(-1).sum(-1) != 0]
-            negative_indices = [i for i, m in enumerate(self.masks) if m.sum(-1).sum(-1) == 0]
-            random.shuffle(positive_indices)
-            selected_indices = positive_indices[:positive_cnt_keep]+negative_indices
-            self.samples = self.samples[selected_indices]
-            self.masks = self.masks[selected_indices]
-            self.product_ids = [self.product_ids[i] for i in selected_indices]
+            #positive_cnt_keep = int(positive_cnt * positive_percentage)
+            
+            if self.num_pos_original  < positive_cnt:
+            #randomly pick certain number of positive examples
+                positive_indices = [i for i, m in enumerate(self.masks) if m.sum(-1).sum(-1) != 0]
+                negative_indices = [i for i, m in enumerate(self.masks) if m.sum(-1).sum(-1) == 0]
+                random.shuffle(positive_indices)
+                selected_indices = positive_indices[:positive_cnt_keep]+negative_indices
+                self.samples = self.samples[selected_indices]
+                self.masks = self.masks[selected_indices]
+                self.product_ids = [self.product_ids[i] for i in selected_indices]
             # self.product_ids = [pid for flag, pid in zip(m, self.product_ids) if flag]
-
+            
+            if self.num_pos_generated > 0:
+                
+            
             print("Original number of positive samples:", positive_cnt)
-            print("Number of positive samples kept:", positive_cnt_keep, ", Percentage:", positive_percentage)
+            print("Number of positive samples kept:", self.num_pos_original)
             print("Total number of samples after selection:", len(self.product_ids)) #=len(selected_indices)
 
     def load_imgs(self):
