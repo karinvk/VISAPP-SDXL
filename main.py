@@ -27,7 +27,13 @@ def main(args):
 
     # Train Setting.
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-    model=ResNet.resnet18(num_classes=2, input_img_size=(704, 256),pre_trained=False).to(device)
+    if args.evaluation_model == 'ResNet18':
+        model = model.ResNet18(num_classes=2, input_img_size=(704, 256)).to(device)
+    elif args.evaluation_model == 'ResNet50':
+        model = model.ResNet50(num_classes=2, input_img_size=(704, 256)).to(device)
+    else:
+        raise ValueError("Invalid evaluation_model value. Choose from 'ResNet18' or 'ResNet50'")
+    #model=ResNet.resnet18(num_classes=2, input_img_size=(704, 256),pre_trained=False).to(device)
     criterion = nn.CrossEntropyLoss()
     optimizer = torch.optim.SGD(model.parameters(), lr=args.lr, momentum=0.9) #optimizer = torch.optim.Adam(params, lr=0.0001)
 
@@ -47,5 +53,6 @@ if __name__ == "__main__":
     parser.add_argument('--num_pos_original', type=int, default=246, help='keep certain number of defect images coming from the original dataset when training, default is keeping all 246 positive images')
     parser.add_argument('--num_pos_generated', type=int, default=0, help='add certain number of synthesized defect images, default is 0')
     parser.add_argument('--root_pos_generated', type=str, default=None, help='synthesized defect images folder')
+    parser.add_argument('--evaluation_model', type=str, default='ResNet18', help='pre-trained model used for evaluation, default is ResNet18')
     args = parser.parse_args()
     main(args)
