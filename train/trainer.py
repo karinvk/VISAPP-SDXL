@@ -12,7 +12,7 @@ def train(trainloader, testloader, model, optimizer, criterion, epochs, device, 
     ap_scores = []  # record AP scores
     precision_scores = []  # record precision scores
     recall_scores = []  # record recall scores
-    folder_path = os.path.dirname('./saved'+model_save_path)
+    folder_path = os.path.dirname('./saved/'+model_save_path)
     if not os.path.exists(folder_path):
         os.makedirs(folder_path)
 
