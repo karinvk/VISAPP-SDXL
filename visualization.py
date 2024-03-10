@@ -15,7 +15,7 @@ def train_vis_by_epoch(train_losses,valid_accuracies,test_name):
     plt.savefig(f'epoch_{test_name}.png')
     plt.close()
 
-def ap_result_visual():
+def ap_result_visual(csv_result_root_name):
     
 
     plt.figure(figsize=(10, 6))
