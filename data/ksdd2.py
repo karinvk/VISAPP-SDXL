@@ -100,9 +100,9 @@ class KolektorSDD2(Dataset):
             if self.num_pos_generated > 0:
                 
             
-            print("Original number of positive samples:", positive_cnt)
-            print("Number of positive samples kept:", self.num_pos_original)
-            print("Total number of samples after selection:", len(self.product_ids)) #=len(selected_indices)
+            print("Original number of positive samples in training:", positive_cnt)
+            print("Number of positive samples kept in training:", self.num_pos_original)
+            print("Total number of samples after selection in training:", len(self.product_ids)) #=len(selected_indices)
 
     def load_imgs(self):
         # Please remove this duplicated files in the official dataset:
