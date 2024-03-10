@@ -39,7 +39,7 @@ def main(args):
     optimizer = torch.optim.SGD(model.parameters(), lr=args.lr, momentum=0.9) #optimizer = torch.optim.Adam(params, lr=0.0001)
 
     # Train and save model
-    train_losses, valid_accuracies, avg_ap_score, avg_precision_score, avg_recall_score=train(train_loader, test_loader, model, optimizer, criterion, args.epochs, device, target_accuracy=None, model_save_path='')
+    train_losses, valid_accuracies, avg_ap_score, avg_precision_score, avg_recall_score=train(train_loader, test_loader, model, optimizer, criterion, args.epochs, device, target_accuracy=None, model_save_name=)
     ap_result(valid_accuracies, avg_ap_score, avg_precision_score, avg_recall_score,args.csv_result_root_name)
 
 if __name__ == "__main__":
