@@ -98,7 +98,23 @@ class KolektorSDD2(Dataset):
             # self.product_ids = [pid for flag, pid in zip(m, self.product_ids) if flag]
             
             if self.num_pos_generated > 0:
-                
+                if root_pos_generated:
+                    generated_img_files = os.listdir('./generated_imgs/' + root_pos_generated)
+                    selected_img_files = random.sample(generated_img_files, self.num_pos_generated)
+        
+                for img_file in selected_img_files:
+                    img_path = os.path.join('./generated_imgs/' + root_pos_generated, img_file)
+                    #mask_path = img_path.replace('.jpg', '_GT.jpg')  
+                    img = load_image(img_path)
+                    #mask = load_mask(mask_path)
+                    mask = np.zeros_like(img) #same size as pic
+                    
+                    self.samples.append(img)
+                    self.masks.append(mask)
+                    self.product_ids.append(os.path.basename(img_path))  # use file name as product_id
+            else:
+                raise ValueError("root_pos_generated should not be None if num_pos_generated > 0, please enter the sub-folder name under the generated_imgs folder")
+
             
             print("Original number of positive samples in training:", positive_cnt)
             print("Number of positive samples kept in training:", self.num_pos_original)
