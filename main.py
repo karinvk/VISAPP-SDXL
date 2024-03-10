@@ -39,7 +39,7 @@ def main(args):
     optimizer = torch.optim.SGD(model.parameters(), lr=args.lr, momentum=0.9) #optimizer = torch.optim.Adam(params, lr=0.0001)
 
     # Train and save model
-    train_losses, valid_accuracies, avg_ap_score, avg_precision_score, avg_recall_score=train(train_loader, test_loader, model, optimizer, criterion, args.epochs, device, target_accuracy=None, model_save_path={args.root_pos_generated})
+    train_losses, valid_accuracies, avg_ap_score, avg_precision_score, avg_recall_score=train(train_loader, test_loader, model, optimizer, criterion, args.epochs, device, target_accuracy=None, model_save_path='')
     ap_result(valid_accuracies, avg_ap_score, avg_precision_score, avg_recall_score,args.csv_result_root_name)
 
 if __name__ == "__main__":
@@ -53,6 +53,6 @@ if __name__ == "__main__":
     parser.add_argument('--root_pos_generated', type=str, default=None, help='synthesized defect images folder')
     parser.add_argument('--evaluation_model', type=str, default='ResNet18', help='pre-trained model used for evaluation, default is ResNet18')
     parser.add_argument('--csv_result_root_name', type=str, default='./saved/result.csv', help='default saved/result.csv')
-    
+
     args = parser.parse_args()
     main(args)
