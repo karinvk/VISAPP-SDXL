@@ -3,7 +3,7 @@ from tqdm import tqdm
 import os
 from torchmetrics import AveragePrecision, Precision, Recall
 
-def train(trainloader, testloader, model, optimizer, criterion, epochs, device, target_accuracy=None, model_save_path='./saved'):
+def train(trainloader, testloader, model, optimizer, criterion, epochs, device, target_accuracy=None, model_save_path=''):
     best_acc = 0.0
     train_accuracies = []  # record accuracy for training
     train_losses = []  # record loss for training
@@ -12,7 +12,7 @@ def train(trainloader, testloader, model, optimizer, criterion, epochs, device, 
     ap_scores = []  # record AP scores
     precision_scores = []  # record precision scores
     recall_scores = []  # record recall scores
-    folder_path = os.path.dirname(model_save_path)
+    folder_path = os.path.dirname('./saved'+model_save_path)
     if not os.path.exists(folder_path):
         os.makedirs(folder_path)
 
