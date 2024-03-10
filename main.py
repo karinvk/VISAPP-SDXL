@@ -10,6 +10,7 @@ from model.resnet import ResNet
 from train.trainer import train
 import os
 import pandas as pd
+from utils.save_ap_result import ap_result
 
 def main(args):
     # Dataset.
@@ -42,7 +43,7 @@ def main(args):
     # df = pd.DataFrame({'train_loss': train_losses, 'valid_accuracy': valid_accuracies})
     # file_name = f"epoch_{args.evaluation_model}_{args.num_pos_original}_{args.root_pos_generated}_{args.num_pos_generated}.csv"
     # df.to_csv(file_name, index=False)
-    
+    ap_result(valid_accuracies, avg_ap_score, avg_precision_score, avg_recall_score,args.)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Test the KolektorSDD2 dataset')
@@ -54,5 +55,7 @@ if __name__ == "__main__":
     parser.add_argument('--num_pos_generated', type=int, default=0, help='add certain number of synthesized defect images, default is 0')
     parser.add_argument('--root_pos_generated', type=str, default=None, help='synthesized defect images folder')
     parser.add_argument('--evaluation_model', type=str, default='ResNet18', help='pre-trained model used for evaluation, default is ResNet18')
+    parser.add_argument('--evaluation_model', type=str, default='ResNet18', help='pre-trained model used for evaluation, default is ResNet18')
+    
     args = parser.parse_args()
     main(args)
