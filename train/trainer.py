@@ -1,6 +1,7 @@
 import torch
 from tqdm import tqdm 
 import os
+from torchmetrics import AveragePrecision, Precision, Recall
 
 def train(trainloader, testloader, model, optimizer, criterion, epochs, device, target_accuracy=None, model_save_path='./saved'):
     best_acc = 0.0
@@ -8,6 +9,9 @@ def train(trainloader, testloader, model, optimizer, criterion, epochs, device, 
     train_losses = []  # record loss for training
     valid_accuracies = []  # record accuracy for validation
     valid_losses = []  # record loss for validation
+    ap_scores = []  # record AP scores
+    precision_scores = []  # record precision scores
+    recall_scores = []  # record recall scores
     folder_path = os.path.dirname(model_save_path)
     if not os.path.exists(folder_path):
         os.makedirs(folder_path)
@@ -56,11 +60,12 @@ def train(trainloader, testloader, model, optimizer, criterion, epochs, device, 
             val_bar = tqdm(testloader)
             for val_data in val_bar:
                 val_images, val_labels, val_mask, val_info = val_data
-                preds_scores = model(val_images.to(device)) #preds_probs,_ = model(inputs)
+                val_images, val_labels = val_images.to(device), val_labels.to(device)
+                preds_scores = model(val_images) #preds_probs,_ = model(inputs)
                 # loss = loss_function(outputs, test_labels)
                 _, preds_class = torch.max(preds_scores[0], 1)  
                 # torch.max(preds_scores, dim=1)[1]
-                correct_valid += torch.eq(preds_class, val_labels.to(device)).sum().item()
+                correct_valid += torch.eq(preds_class, val_labels).sum().item()
                 total_valid += val_labels.size(0) #=len(testset)
                 val_bar.desc = "valid epoch[{}/{}]".format(epoch + 1,
                                                             epochs)
@@ -69,6 +74,15 @@ def train(trainloader, testloader, model, optimizer, criterion, epochs, device, 
         valid_accuracies.append(valid_accuracy)
         #valid_losses.append(loss.item())
 
+            
+        ap_score = AveragePrecision(preds_scores.softmax(dim=1), val_labels)
+        precision_score = Precision(preds_class, val_labels)
+        recall_score = Recall(preds_class, val_labels)
+
+        ap_scores.append(ap_score.item())
+        precision_scores.append(precision_score.item())
+        recall_scores.append(recall_score.item())
+        
         print('[epoch %d] train_loss: %.3f  val_accuracy: %.3f' %
                 (epoch + 1, train_loss, valid_accuracy)) #transteps=len(trainloader)
         # s per iteration, count of iteration = total number of sample / batch size
@@ -78,4 +92,7 @@ def train(trainloader, testloader, model, optimizer, criterion, epochs, device, 
             torch.save(model.state_dict(), model_save_path)
 
     print('Finished Training')
-    return train_losses, valid_accuracies
+    avg_ap_score = sum(ap_scores) / len(ap_scores)
+    avg_precision_score = sum(precision_scores) / len(precision_scores)
+    avg_recall_score = sum(recall_scores) / len(recall_scores)
+    return train_losses, valid_accuracies, avg_ap_score, avg_precision_score, avg_recall_score
