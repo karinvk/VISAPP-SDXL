@@ -33,14 +33,14 @@ def main(args):
         model = model.ResNet50(num_classes=2, input_img_size=(704, 256)).to(device)
     else:
         raise ValueError("Invalid evaluation_model value. Choose from 'ResNet18' or 'ResNet50'")
-    #model=ResNet.resnet18(num_classes=2, input_img_size=(704, 256),pre_trained=False).to(device)
+    
     criterion = nn.CrossEntropyLoss()
     optimizer = torch.optim.SGD(model.parameters(), lr=args.lr, momentum=0.9) #optimizer = torch.optim.Adam(params, lr=0.0001)
 
     # Train and save model
     train_losses, valid_accuracies, avg_ap_score, avg_precision_score, avg_recall_score=train(train_loader, test_loader, model, optimizer, criterion, args.epochs, device, target_accuracy=None, model_save_path={args.root_pos_generated})
     df = pd.DataFrame({'train_loss': train_losses, 'valid_accuracy': valid_accuracies})
-    file_name = f"epoch_{args.num_pos_original}_{args.root_pos_generated}_{args.num_pos_generated}.csv"
+    file_name = f"epoch_{args.evaluation_model}_{args.num_pos_original}_{args.root_pos_generated}_{args.num_pos_generated}.csv"
     df.to_csv(file_name, index=False)
     
 
