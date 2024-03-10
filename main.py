@@ -14,7 +14,7 @@ import pandas as pd
 def main(args):
     # Dataset.
     print('Loading KolektorSDD2 training set...')
-    train_data = KolektorSDD2(dataroot=args.dataset_path, split='train', scale='half', debug=False, positive_percentage=args.pos_percentage)
+    train_data = KolektorSDD2(dataroot=args.dataset_path, split='train', scale='half', debug=False, num_pos_original=args.num_pos_original, num_pos_generated=args.num_pos_generated, root_pos_generated=args.root_pos_generated)
     print('Number of samples:', len(train_data))
 
     print('Loading KolektorSDD2 test set...')
