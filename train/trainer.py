@@ -89,6 +89,7 @@ def train(trainloader, testloader, model, optimizer, criterion, epochs, device, 
 
         if valid_accuracy > best_acc:
             best_acc = valid_accuracy
+            model_save_path = 
             torch.save(model.state_dict(), model_save_path)
 
     print('Finished Training')
