@@ -1,12 +1,7 @@
 import pandas as pd
 import os
 
-def training_epoch_vis():
-    
-
 def ap_result(valid_accuracies,avg_ap_score,avg_precision_score,avg_recall_score,csv_result_root_name):
-
-    
     data = {
     'Experiment_setting': f"{args.evaluation_model}_{args.num_pos_original}_{args.root_pos_generated}_{args.num_pos_generated}",
     'Max_Valid_Accuracies': max_valid_acc,
@@ -23,3 +18,4 @@ def ap_result(valid_accuracies,avg_ap_score,avg_precision_score,avg_recall_score
     else:
         df = df  
     df.to_csv(csv_path, index=False)
+    
