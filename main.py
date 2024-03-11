@@ -10,7 +10,7 @@ from model.resnet import ResNet
 from train.trainer import train
 import os
 import pandas as pd
-from utils.save_ap_result import ap_result
+from utils.save_result import ap_result, train_vis_by_epoch
 
 def main(args):
     # Dataset.
