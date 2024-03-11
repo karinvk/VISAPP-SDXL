@@ -29,9 +29,9 @@ def main(args):
     # Train Setting.
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     if args.evaluation_model == 'ResNet18':
-        model = model.ResNet18(num_classes=2, input_img_size=(704, 256)).to(device)
+        model = ResNet18(num_classes=2, input_img_size=(704, 256)).to(device)
     elif args.evaluation_model == 'ResNet50':
-        model = model.ResNet50(num_classes=2, input_img_size=(704, 256)).to(device)
+        model = ResNet50(num_classes=2, input_img_size=(704, 256)).to(device)
     else:
         raise ValueError("Invalid evaluation_model value. Choose from 'ResNet18' or 'ResNet50'")
     
