@@ -6,7 +6,7 @@ import torch
 from torch.utils.data import DataLoader
 import torch.nn as nn
 from data.ksdd2 import KolektorSDD2
-from model.resnet import ResNet
+from model.resnet import ResNet18,ResNet50
 from train.trainer import train
 import os
 import pandas as pd
@@ -46,13 +46,15 @@ def main(args):
     
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Test the KolektorSDD2 dataset')
-    parser.add_argument('--dataset_path', type=str, default='.', help='Path to the KolektorSDD2 dataset')
     parser.add_argument('--epochs',type=int,default=50,help='default 50')
     parser.add_argument('--momentum',type=float,default=0.9,help='default 0.9')
     parser.add_argument('--lr',type=float, default=0.001,help='learning rate, default 0.001')
+
+    parser.add_argument('--dataset_path', type=str, default='.', help='Path to the KolektorSDD2 dataset')
     parser.add_argument('--num_pos_original', type=int, default=246, help='keep certain number of defect images coming from the original dataset when training, default is keeping all 246 positive images')
     parser.add_argument('--num_pos_generated', type=int, default=0, help='add certain number of synthesized defect images, default is 0')
-    parser.add_argument('--root_pos_generated', type=str, default=None, help='synthesized defect images folder')
+    parser.add_argument('--root_pos_generated', type=str, default=None, help='synthesized defect images sub-folder name under generated_imgs')
+    
     parser.add_argument('--evaluation_model', type=str, default='ResNet18', help='pre-trained model used for evaluation, default is ResNet18')
     parser.add_argument('--csv_result_root_name', type=str, default='./saved/result.csv', help='default saved/result.csv')
 

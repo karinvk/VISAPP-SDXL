@@ -1,6 +1,7 @@
-#python main.py --dataset_path ./data/input/ --epochs 50 --lr 0.0001 --pos_percentage 1
-
-for pos_percentage in $(seq 0 0.1 1); do
-    echo "Running with pos_percentage=${pos_percentage}"
-    python main.py --dataset_path ./data/input/ --epochs 50 --lr 0.0001 --pos_percentage $(echo "${pos_percentage}" | tr ',' '.')
+for num_pos_original in $(seq 0 50 246); do
+    echo "Running with num_pos_original=${num_pos_original}"
+    python main.py --evaluation_model ResNet18 --dataset_path ./data/input/ --num_pos_original $num_pos_original
 done
+
+#--num_pos_generated 10
+#--root_pos_generated sdxl-1
