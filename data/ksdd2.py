@@ -6,7 +6,7 @@ import re
 import torch
 import random
 import torchvision.transforms as T
-
+import numpy as np
 from PIL import Image
 from torch.utils.data import Dataset
 
@@ -91,7 +91,7 @@ class KolektorSDD2(Dataset):
                 positive_indices = [i for i, m in enumerate(self.masks) if m.sum(-1).sum(-1) != 0]
                 negative_indices = [i for i, m in enumerate(self.masks) if m.sum(-1).sum(-1) == 0]
                 random.shuffle(positive_indices)
-                selected_indices = positive_indices[:positive_cnt_keep]+negative_indices
+                selected_indices = positive_indices[:self.num_pos_original]+negative_indices
                 self.samples = self.samples[selected_indices]
                 self.masks = self.masks[selected_indices]
                 self.product_ids = [self.product_ids[i] for i in selected_indices]
@@ -107,8 +107,8 @@ class KolektorSDD2(Dataset):
                         
                     for img_file in selected_img_files:
                         img_path = os.path.join('./generated_imgs/' + root_pos_generated, img_file)
-                        #mask_path = img_path.replace('.jpg', '_GT.jpg')  
-                        img = load_image(img_path)
+                        #mask_path = img_path.replace('.jpg', '_GT.jpg') 
+                        img = self.transform(Image.open(img_path))
                         #mask = load_mask(mask_path)
                         mask = np.ones_like(img) #same size as pic
                      
