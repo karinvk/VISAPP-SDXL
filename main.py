@@ -42,7 +42,8 @@ def main(args):
     experiment_name=f"{args.evaluation_model}_{args.num_pos_original}_{args.root_pos_generated}_{args.num_pos_generated}"
     train_losses, valid_accuracies, avg_ap_score, avg_precision_score, avg_recall_score=train(train_loader, test_loader, model, optimizer, criterion, args.epochs, device, target_accuracy=None, model_save_name=experiment_name)
     ap_result(valid_accuracies, avg_ap_score, avg_precision_score, avg_recall_score,args.csv_result_root_name)
-
+    train_vis_by_epoch(train_losses,valid_accuracies,experiment_name)
+    
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Test the KolektorSDD2 dataset')
     parser.add_argument('--dataset_path', type=str, default='.', help='Path to the KolektorSDD2 dataset')
