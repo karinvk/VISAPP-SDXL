@@ -6,6 +6,8 @@ python utils/ksdd2_downloader.py --out_path ./data/input
 
 Run Experiments:
 
+python main.py
+
 #sh run.sh
 
 Visualizations:
