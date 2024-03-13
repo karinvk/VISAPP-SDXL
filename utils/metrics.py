@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 import numpy as np
 from sklearn.metrics import precision_recall_curve, auc, average_precision_score, precision_score, recall_score
 import pandas as pd
