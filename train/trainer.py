@@ -63,7 +63,7 @@ def train(trainloader, testloader, model, optimizer, criterion, epochs, device, 
                 val_images, val_labels = val_images.to(device), val_labels.to(device)
                 preds_scores = model(val_images) 
                 # loss = loss_function(outputs, test_labels)
-                preds_prob , preds_class = torch.max(preds_scores, 1)  # torch.max(preds_scores, dim=1)[1]
+                _, preds_class = torch.max(preds_scores, 1)  # torch.max(preds_scores, dim=1)[1]
                 correct_valid += torch.eq(preds_class, val_labels).sum().item()
                 total_valid += val_labels.size(0)
                 val_bar.desc = "valid epoch[{}/{}]".format(epoch + 1,
