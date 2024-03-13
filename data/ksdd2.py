@@ -11,7 +11,7 @@ from PIL import Image
 from torch.utils.data import Dataset
 
 
-def c2chw(x): # change to ChannelHeightWwidth
+def c2chw(x): 
     return x.unsqueeze(1).unsqueeze(2)
 
 
@@ -20,10 +20,8 @@ def inverse_list(list):
     List to dict: index -> element
     """
     dict = {}
-
     for idx, x in enumerate(list):
         dict[x] = idx
-
     return dict
 
 
@@ -163,7 +161,7 @@ class KolektorSDD2(Dataset):
         else:
             y = self.class_to_idx['defect'] #1
 
-        return x, y, a, 0 # shape=4
+        return x, y, a, 0 
 
 
     def __len__(self):
